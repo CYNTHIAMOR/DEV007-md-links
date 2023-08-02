@@ -16,11 +16,7 @@ const mdLinks = (path, options = { validate: false }) => new Promise((resolve, r
   const converPath = convertToAbsolute(path);
   let arrayMd = [];
   if (existRoute(converPath)) {
-    // Si la ruta existe, se verifica si es un directorio utilizando la función verifyDirectory
     const pathExists = (inputPath) => fs.existsSync(isAbsolute(inputPath));
-    // se verifica si es un directorio
-    // eslint-disable-next-line no-console
-    console.log(pathExists, inputPath);
     if (verifyDirectory(convertExample)) {
       const arrFile = openedDirectory(convertExample);
 
@@ -31,7 +27,6 @@ const mdLinks = (path, options = { validate: false }) => new Promise((resolve, r
         reject('El directorio está vacío, ingrese otra ruta.');
       }
 
-      // eslint-disable-next-line no-unused-vars
       const checkIsDirectory = (inputPath) => fs.statSync(inputPath).isDirectory();
     } else {
       arrayMd = filesMd([convertExample]);
@@ -46,7 +41,6 @@ const mdLinks = (path, options = { validate: false }) => new Promise((resolve, r
           resolve(arrLink);
         }
       } else {
-        // eslint-disable-next-line prefer-promise-reject-errors
         reject('No hay enlaces, introduce otra ruta.');
       }
     } else {
@@ -55,4 +49,4 @@ const mdLinks = (path, options = { validate: false }) => new Promise((resolve, r
   } else {
     reject('La entrada de ruta no existe, ingrese otra ruta.');
   }
-});
+}); 

@@ -1,12 +1,14 @@
 const path = require('path');
 const fs = require('fs'); // file system es una libreria
 
-// creamos una funcion mdLinks
-const mdLinks = (parameterPath, options = { stats: false, validate: false }) => {
+// creamos una funcion mdLinksh
+const mdLinks = (
+  parameterPath,
+  options = { stats: false, validate: true }
+) => {
   let absolutPath = '';
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line no-console
-    console.log('Ruta recibida por parámetro:', parameterPath, options);
+    console.log('Ruta recibida por parámetro:', parameterPath);
 
     if (path.isAbsolute(parameterPath)) {
       absolutPath = parameterPath;
@@ -14,15 +16,12 @@ const mdLinks = (parameterPath, options = { stats: false, validate: false }) => 
       // con el resolve convierte la ruta en absoluta
       absolutPath = path.resolve(parameterPath);
     }
-    // eslint-disable-next-line no-console
     console.log('Ruta absoluta:', absolutPath);
 
     // verificar si la ruta existe
     if (!fs.existsSync(absolutPath)) {
       // si la ruta no existe saldra un mensaje de error
-      // eslint-disable-next-line no-console
       console.log('la ruta no existe');
-      // eslint-disable-next-line no-console
       reject('El archivo no existe');
     }
 
@@ -30,7 +29,6 @@ const mdLinks = (parameterPath, options = { stats: false, validate: false }) => 
 
     const extensionArray = absolutPath.split('.');
     const extension = extensionArray[extensionArray.length - 1];
-    // eslint-disable-next-line no-console
     console.log('Extensión:', extension);
 
     if (extension !== 'md') {
@@ -44,10 +42,10 @@ const mdLinks = (parameterPath, options = { stats: false, validate: false }) => 
   });
 };
 
-console.log(mdLinks('exampleFile/folder.md'));
+console.log(mdLinks('exampleFile/folder.md'))
 
 // funcion para extraer los links
-function extractLinksFromMd(absolutPath) {
+function extractLinksFromMd  (absolutPath) {
   // esta expresión regular se utiliza para buscar y capturar el texto del enlace y la URL
   // dentro de un texto que siga el formato de los enlaces en Markdown,
   // donde el texto del enlace está entre corchetes [ ] y la URL está entre paréntesis ( )
@@ -67,14 +65,33 @@ function extractLinksFromMd(absolutPath) {
     const url = match[2];
 
     links.push({ text, url, file: absolutPath });
-}
-  return links;
-}
-if (options.validate) {
-  for (let i = 0; i < linksFound.length; i++) {
-    linksFound[i] = validateLinks(linksFound[i]);
   }
+
+  return links;
+};
+// Supongamos que tenemos un objeto "options" que puede tener una propiedad "validate".
+/// Supongamos que tenemos un objeto "options" que puede tener una propiedad "validate".
+// Si "options.validate" es true, entonces se realizará la validación de los enlaces encontrados en el array "linksFound".
+
+// Verificamos que "options" exista y contenga la propiedad "validate" con valor true antes de proceder.
+if (options && options.validate) {
+  // Creamos un nuevo array para almacenar los enlaces validados.
+  const validatedLinks = [];
+
+  // Iteramos por cada elemento en el array "linksFound".
+  for (let i = 0; i < linksFound.length; i++) {
+    // Llamamos a la función "validateLinks" pasándole el enlace actual "linksFound[i]" como argumento.
+    // La función "validateLinks" realizará la validación del enlace y retornará el resultado de la validación.
+    // El resultado se agrega al nuevo array "validatedLinks".
+    validatedLinks.push(validateLinks(linksFound[i]));
+  }
+
+  // Ahora el nuevo array "validatedLinks" contiene los enlaces validados y podemos asignarlo nuevamente a "linksFound".
+  linksFound = validatedLinks;
 }
+// Si "options" no existe o "options.validate" es false, el bloque de código dentro del "if" no se ejecutará,
+// y la validación no ocurrirá, dejando el array "linksFound" sin cambios.
+
 // funcion que espera a todas las promesas en el array linksFound se resuelvan
 Promise.all(linksFound).then((linksFound) => {
   // verifica si stats esta habilitada si es asi devuelve un oobjeto: linksFound y stats
@@ -89,24 +106,26 @@ Promise.all(linksFound).then((linksFound) => {
   return resolve({ linksFound });
 });
 
+
 // funcion validate recibe un objeto(link)como argumento
-const validateLinks = (link) => fetch(link.url)
-  .then((response) => {
-    if (response.status >= 200 && response.status < 400) {
+const validateLinks = (link) =>
+  fetch(link.url)
+    .then((response) => {
+      if (response.status >= 200 && response.status < 400) {
+        link.status = response.status;
+        link.ok = 'ok';
+        return link;
+      }
       link.status = response.status;
-      link.ok = 'ok';
+      link.ok = 'fail';
       return link;
-    }
-    link.status = response.status;
-    link.ok = 'fail';
-    return link;
-  })
-  .catch((error) => {
-    console.log(error);
-    link.status = 'Error';
-    link.ok = 'fail';
-    return link;
-  });
+    })
+    .catch((error) => {
+      console.log(error);
+      link.status = 'Error';
+      link.ok = 'fail';
+      return link;
+    });
 
 // funcion statslINKS devuelve un objeto con informacion
 // sobre los enlaces proporcionados como argumento
