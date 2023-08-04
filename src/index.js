@@ -11,7 +11,7 @@ const {
   filterFile,
   statusLinks,
 } = require('./mdLinks');
-
+// ("../mdLinks.js");
 const mdLinks = (path, options = { validate: false }) => new Promise((resolve, reject) => {
   const converPath = convertToAbsolute(path);
   let arrayMd = [];
@@ -50,3 +50,4 @@ const mdLinks = (path, options = { validate: false }) => new Promise((resolve, r
     reject('La entrada de ruta no existe, ingrese otra ruta.');
   }
 }); 
+module.exports = { mdLinks };

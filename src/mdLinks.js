@@ -16,20 +16,20 @@ const mdLinks = (
       // con el resolve convierte la ruta en absoluta
       absolutPath = path.resolve(parameterPath);
     }
-    console.log('Ruta absoluta:', absolutPath);
+    console.log('Ruta absoluta:', absolutPath, 'N°2');
 
     // verificar si la ruta existe
     if (!fs.existsSync(absolutPath)) {
       // si la ruta no existe saldra un mensaje de error
-      console.log('la ruta no existe');
+      console.log('la ruta no existe', '3');
       reject('El archivo no existe');
     }
 
-    console.log('la ruta SI existe');
+    console.log('la ruta SI existe', '4');
 
     const extensionArray = absolutPath.split('.');
     const extension = extensionArray[extensionArray.length - 1];
-    console.log('Extensión:', extension);
+    console.log('Extensión:', extension, '5');
 
     if (extension !== 'md') {
       reject('El archivo no es .md');
@@ -37,6 +37,12 @@ const mdLinks = (
 
     // console.log(fileContent);
     const linksFound = extractLinksFromMd(absolutPath);
+    if(options.validate){
+      for (let i = 0; i < linksFound.length; i++) {
+        linksFound[i] = validateLinks(linksFound[i]);
+
+      }
+    }
 
     resolve(linksFound);
   });
@@ -72,41 +78,6 @@ function extractLinksFromMd  (absolutPath) {
 // Supongamos que tenemos un objeto "options" que puede tener una propiedad "validate".
 /// Supongamos que tenemos un objeto "options" que puede tener una propiedad "validate".
 // Si "options.validate" es true, entonces se realizará la validación de los enlaces encontrados en el array "linksFound".
-
-// Verificamos que "options" exista y contenga la propiedad "validate" con valor true antes de proceder.
-if (options && options.validate) {
-  // Creamos un nuevo array para almacenar los enlaces validados.
-  const validatedLinks = [];
-
-  // Iteramos por cada elemento en el array "linksFound".
-  for (let i = 0; i < linksFound.length; i++) {
-    // Llamamos a la función "validateLinks" pasándole el enlace actual "linksFound[i]" como argumento.
-    // La función "validateLinks" realizará la validación del enlace y retornará el resultado de la validación.
-    // El resultado se agrega al nuevo array "validatedLinks".
-    validatedLinks.push(validateLinks(linksFound[i]));
-  }
-
-  // Ahora el nuevo array "validatedLinks" contiene los enlaces validados y podemos asignarlo nuevamente a "linksFound".
-  linksFound = validatedLinks;
-}
-// Si "options" no existe o "options.validate" es false, el bloque de código dentro del "if" no se ejecutará,
-// y la validación no ocurrirá, dejando el array "linksFound" sin cambios.
-
-// funcion que espera a todas las promesas en el array linksFound se resuelvan
-Promise.all(linksFound).then((linksFound) => {
-  // verifica si stats esta habilitada si es asi devuelve un oobjeto: linksFound y stats
-  if (options.stats) {
-    // resuelve un objeto con dos propiedades linksfound y stats
-    if (options.validate) {
-      return resolve({ linksFound, stats: statsValidateLinks(linksFound) });
-    }
-    return resolve({ linksFound, stats: statsLinks(linksFound) });
-  }
-
-  return resolve({ linksFound });
-});
-
-
 // funcion validate recibe un objeto(link)como argumento
 const validateLinks = (link) =>
   fetch(link.url)
@@ -126,6 +97,55 @@ const validateLinks = (link) =>
       link.ok = 'fail';
       return link;
     });
+// Verificamos que "options" exista y contenga la propiedad "validate" con valor true antes de proceder.
+const options = {
+ validate: true, 
+ stats: true,
+};
+
+const links = extractLinksFromMd('exampleFile/folder.md', options);
+const linkStatus = extractLinksFromMd('exampleFile/folder.md', options);
+// --------------------------------------
+
+//___________________________________________
+const validatedLinks = [];
+let linksFound ;
+if (options && options.validate) {
+  // Creamos un nuevo array para almacenar los enlaces validados.
+  
+
+  // Iteramos por cada elemento en el array "linksFound".
+  for (let i = 0; i < links.length; i++) {
+    // Llamamos a la función "validateLinks" pasándole el enlace actual "linksFound[i]" como argumento.
+    // La función "validateLinks" realizará la validación del enlace y retornará el resultado de la validación.
+    // El resultado se agrega al nuevo array "validatedLinks".
+   // validatedLinks.push(validateLinks(links[i]));
+   console.log(validateLinks(links[i]))
+  }
+
+  // Ahora el nuevo array "validatedLinks" contiene los enlaces validados y podemos asignarlo nuevamente a "linksFound".
+  linksFound = validatedLinks;
+}
+// Si "options" no existe o "options.validate" es false, el bloque de código dentro del "if" no se ejecutará,
+// y la validación no ocurrirá, dejando el array "linksFound" sin cambios.
+
+// funcion que espera a todas las promesas en el array linksFound se resuelvan
+Promise.all(linksFound).then((linksFound) => {
+  console.log(linksFound, '1')
+  // verifica si stats esta habilitada si es asi devuelve un oobjeto: linksFound y stats
+  if (options.stats) {
+    // resuelve un objeto con dos propiedades linksfound y stats
+    if (options.validate) {
+     resolve({ linksFound, stats: statsValidateLinks(linksFound) });
+    }else{
+     return resolve({ linksFound, stats: statsLinks(linksFound) });
+    }
+     resolve({ linksFound, stats: statsLinks(linksFound) });
+  }
+   return  resolve({ linksFound });
+});
+
+
 
 // funcion statslINKS devuelve un objeto con informacion
 // sobre los enlaces proporcionados como argumento
@@ -151,4 +171,4 @@ const statsValidateLinks = (links) => {
   };
 };
 
-module.exports = mdLinks;
+module.exports = {mdLinks};

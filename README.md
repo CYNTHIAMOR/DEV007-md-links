@@ -362,6 +362,7 @@ manera a través de la **terminal**:
 
 Por ejemplo:
 
+
 ```sh
 $ md-links ./some/example.md
 ./some/example.md http://algo.com/2/3/ Link a algo
@@ -411,7 +412,9 @@ También podemos combinar `--stats` y `--validate` para obtener estadísticas qu
 necesiten de los resultados de la validación.
 
 ```sh
-$ md-links ./some/example.md --stats --validate
+$ md-links ./some/example.md 
+
+
 Total: 3
 Unique: 3
 Broken: 1

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { mdLinks } = require('./mdLinks');
 // Obtenemos el tercer argumento ingresado en la línea de comandos y lo almacenamos en 'filePath'.
 const filePath = process.argv[2];
@@ -11,7 +12,7 @@ const validateOption = process.argv.includes('--validate');
 // Llamamos a la función 'mdLinks' pasando como argumento
 // la ruta del archivo ('filePath') y un objeto con las opciones 'stats' y 'validate'.
 mdLinks(filePath, { stats: statsOption, validate: validateOption })
-  .then((result) => console.log(result)),
+  .then((result) => console.log(result))
   // Si la promesa se resuelve con éxito, mostramos el resultado en la consola.
   .catch((error) => console.log(error))
 // Si la promesa es rechazada (ocurre un error), mostramos el error en la consola.

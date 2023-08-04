@@ -1,7 +1,6 @@
 'use strict';
-
 Object.defineProperty(exports, '__esModule', {
-  value: true;
+  value: true
 });
 exports.mdLinks = void 0;
 var _fs = _interopRequireDefault(require('fs'));
@@ -18,4 +17,4 @@ var mdLinks = function mdLinks(path, options) {
     }
   });
 };
-exports.mdLinks = mdLinks;
+exports.mdLinks = {mdLinks};
