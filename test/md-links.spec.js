@@ -1,43 +1,55 @@
-const path = require('path');
-const fs = require('fs');
-const fetch = require('node-fetch'); 
-const chalk = require('chalk');
+/* eslint-disable no-sequences */
+/* eslint-disable no-undef */
+/* eslint-disable prefer-promise-reject-errors */
+// La función devuelve una promesa que se resolverá
+// se importan varias funciones del archivo mdLinks.js
+// Importar el módulo correcto, reemplazar "..src/mdLinks" por "../src/md-links"
+const {
+  existRoute,
+  convertToAbsolute,
+  verifyDirectory,
+  openedDirectory,
+  filterFile,
+  statusLinks,
+} = require('..src/mdLinks');
 
+// ("../mdLinks.js");
+const mdLinks = (path, options = { validate: false }) => new Promise((resolve, reject) => {
+  const converPath = convertToAbsolute(path);
+  let arrayMd = [];
+  if (existRoute(converPath)) {
+    const pathExists = (inputPath) => fs.existsSync(isAbsolute(inputPath));
+    if (verifyDirectory(convertExample)) {
+      const arrFile = openedDirectory(convertExample);
 
-const [, , ...args] = process.argv;
+      const convertToAbsolute = (inputPath) => path.resolve(inputPath);
+      if (arrFile.length > 0) {
+        arrayMd = filterFile(arrFile);
+      } else {
+        reject('El directorio está vacío, ingrese otra ruta.');
+      }
 
-if (args.length === 0 && !args[0]) 
-
- /* describe('mdLinks,(file)', () => {
-  it('Debería retornar los links que se encuetran dentro de la ruta que se ingresa', () => {
-    return mdLinks(file).then((data) => {
-      expect(data).toEqual(objDat);
-      // comparar datos primitivos
-    });
-  });
-}); */
-describe('mdLinks(file, true)', () => {
-  test('Debería retornar True si se encuentran los links dentro de la ruta que se ingresa', () => {
-    return mdLinks(file, true).then((data) => {
-      expect(data).toEqual(objDat);
-    });
-  });
-});
- const path = require('path');
-//  ejemplos de rutas de archivos y objetos de datos.
-// ruta de archivo incorrecta
-const pathError = 'C:\\Users\\USUARIO\\Desktop\\DEV007-md-links\\example.file';
-// ruta de archivo válida
-const file = 'C:\\Users\\USUARIO\\Desktop\\DEV007-md-links\\example.file\\folder.md';
-// representa una carpeta válida
-const folder = 'C:\\Users\\USUARIO\\Desktop\\DEV007-md-links\\exampleFile\\folder.md';
-// contiene información sobre un archivo, incluyendo la ruta del archivo,
-// el enlace y el texto asociado
-const objDat = [
-  {
-    file:'C:\Users\USUARIO\Desktop\DEV007-md-links\exampleFile\folder.md',
-    href:'https://www.youtube.com/watch?v=FOA9brQ3oxY',
-    text: 'Cursos para principiantes de Java Scrip Lorem Ips',
-  },
-] 
-module.exports = {index};
+      const checkIsDirectory = (inputPath) => fs.statSync(inputPath).isDirectory();
+    } else {
+      arrayMd = filesMd([convertExample]);
+    }
+    if (arrayMd.length > 0) {
+      const arrLink = links(arrayMd);
+      if (arrLink.length > 0) {
+        if (options, validate) {
+          statusLinks(arrLink)
+            .then((response) => resolve(response));
+        } else {
+          resolve(arrLink);
+        }
+      } else {
+        reject('No hay enlaces, introduce otra ruta.');
+      }
+    } else {
+      reject('No hay archivos .md, ingrese otra ruta.');
+    }
+  } else {
+    reject('La entrada de ruta no existe, ingrese otra ruta.');
+  }
+}); 
+module.exports = { mdLinks };
