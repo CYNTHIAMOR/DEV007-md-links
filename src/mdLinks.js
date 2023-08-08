@@ -1,6 +1,12 @@
 const path = require('path');
 const fs = require('fs').promises; // Utilizamos fs.promises para trabajar con promesas
 
+const getAbsolutePath = function(parameterPath){
+  return path.isAbsolute(parameterPath)
+      ? parameterPath
+      : path.resolve(parameterPath);
+}
+
 // Creamos una función mdLinks
 const mdLinks = async (
   parameterPath,
@@ -8,9 +14,7 @@ const mdLinks = async (
 ) => {
   try {
     // Obtenemos la ruta absoluta del archivo
-    const absolutPath = path.isAbsolute(parameterPath)
-      ? parameterPath
-      : path.resolve(parameterPath);
+    const absolutPath = getAbsolutePath(parameterPath)
 
     // Verificamos si la ruta existe y si es un archivo .md
     const stats = await fs.stat(absolutPath);
@@ -81,4 +85,4 @@ mdLinks('exampleFile/folder.md', options)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 
-module.exports = { mdLinks };
+module.exports = { mdLinks, getAbsolutePath, validateLink };

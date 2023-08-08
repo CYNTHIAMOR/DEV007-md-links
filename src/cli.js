@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// le estamos diciendo al sistema operativo que debe usar Node.js para ejecutar este archivo cuando se llame desde la línea de comandos.
 const { mdLinks } = require('./mdLinks');
 // Obtenemos el tercer argumento ingresado en la línea de comandos y lo almacenamos en 'filePath'.
 const filePath = process.argv[2];
