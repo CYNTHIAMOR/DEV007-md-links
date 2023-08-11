@@ -1,13 +1,25 @@
-const { mdLinks, getAbsolutePath, validateLinkWithAxios} = require('../src/mdLinks');
+const { mdLinks, getAbsolutePath} = require('../src/mdLinks');
 const fs = require('fs');
-const axios =require('axios')
-const { describe } = require('node:test');
+const axios =require('axios');
+const consoleTable = require('console.table');
+const data = [
+  [
+    {
+      file: 'C:\Users\USUARIO\Desktop\node\DEV007-md-links\exampleFile\folder.md',
+      href: 'https://gith/workshopper/learnyounode',
+      text: 'Markdow',
+    },
+  ],
+];
+
+const rutaRelativa = 'exampleFile';
+const rutaAbsoluta = 'C:\\Users\\USUARIO\\Desktop\\DEV007-md-links\\exampleFile';
 describe('mdLinks', () => {
   it('should reject when path does not exist', async () => {
     try {
       await mdLinks('./exampleFile/folder.md');
     } catch (error) {
-      expect(error.message).toBe('The path does not exist');
+      expect(error.message).toBe('The path does not exist ⛔️');
     }
   });
 });
