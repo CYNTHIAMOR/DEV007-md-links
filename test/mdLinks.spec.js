@@ -1,6 +1,7 @@
-const { mdLinks, getAbsolutePath} = require('../src/mdLinks');
+const { mdLinks, getAbsolutePath, existPath, getStatsValidate, validateOption} = require('../src/mdLinks');
 const fs = require('fs');
-const axios =require('axios');
+const axios = require('axios');
+const path = require('path')
 const consoleTable = require('console.table');
 const data = [
   [
@@ -23,7 +24,13 @@ describe('mdLinks', () => {
     }
   });
 });
+describe("existPath", () => {
+  const rutaExistente = 'C:\\Users\\USUARIO\\Desktop\\DEV007-md-links\\exampleFile';
 
+  it("debería verificar que la ruta exista", () => {
+    expect(fs.existsSync(rutaExistente)).toBe(true);
+  });
+});
 describe('getAbsolutePath', () => {
 
   it('Debe manejar correctamente las rutas con espacios', () => {
@@ -46,3 +53,36 @@ describe('linkRegex', () => {
     expect(matches).toEqual(['[enlace](https://www.youtube.com/watch?v=ivdTnPl1ND0)']);
   });
 });
+describe("getStatsValidate", () => {
+  const links = [
+    { url: 'http://example.com', ok: 'ok' },
+    { url: 'http://google.com', ok: 'fail' },
+    { url: 'http://example.com', ok: 'ok' },
+  ];
+
+  it("debería calcular correctamente las estadísticas", () => {
+    const result = getStatsValidate(links);
+    expect(result.Total).toBe(3);
+    expect(result.Unique).toBe(2);
+    expect(result.Broken).toBe(1);
+  });
+});
+describe("validateOption", () => {
+  const validLink = { url: 'http://example.com' };
+  const invalidLink = { url: 'http://nonexistent-url.com' };
+
+  it("debería validar un enlace correctamente", async () => {
+    const result = await validateOption(validLink);
+    expect(result.status).toBe(200);
+    expect(result.ok).toBe('ok');
+  });
+
+  it("debería marcar como fallido un enlace no válido", async () => {
+    const result = await validateOption(invalidLink);
+    expect(result.status).toBe('Error');
+    expect(result.ok).toBe('fail');
+  });
+});
+
+
+

@@ -28,13 +28,13 @@ El proyecto implica la creación de una biblioteca de JavaScript personalizada.
 El proyecto se desarrolló en 5 sprints, y la planificación y seguimiento se realizó utilizando la
 herramienta trello y Github , como se muestra a continuación:
 
-![Alt text](<src/img/trellorg.png>)
+![Alt text](</src/img/trellorg.png>)
 
 
 ## 4. Diagrama de flujo
 
-![Alt text](<src/img/primera.png>)
-![Alt text](<src/img/segunda.png>)
+![Alt text](</src/img/primera.png>)
+![Alt text](</src/img/segunda.png>)
 
 ## 5. Guía de uso e instalación 🛠️
 
@@ -125,21 +125,27 @@ Con `validate:true` :
 Si pasamos la opción `--validate`, el módulo debe hacer una petición HTTP para
 averiguar si el link funciona o no. Si el link resulta en una redirección a una
 URL que responde ok, entonces consideraremos el link como ok.
+![Alt text](</src/img/validate.png.jpeg>)
 
-![Validate](/imgReadme/con-validate.jpeg)
 
 ##### `--stats`
 
 Si pasamos la opción `--stats` el output (salida) será un texto con estadísticas
 básicas sobre los links.
-
+![Alt text](</src/img/stats.jpeg>)
 
 
 ##### `--validate y --stats`
 
 También podemos combinar `--stats` y `--validate` para obtener estadísticas que
 necesiten de los resultados de la validación.
+![Alt text](</src/img/validate-stats.jpeg>)
+ 
+ sin opciones 
+ ![Alt text](</src/img/sin-options.jpeg>)
 
+ ruta invalida 
+ ![Alt text](</src/img/ruta-error.jpeg>)
 
 ## 8. El trabajo se resolvió de manera individual
 
@@ -173,6 +179,7 @@ El proyecto incluye pruebas unitarias para garantizar su funcionalidad. Estas pr
 
 Para ejecutar las pruebas, navega al directorio del proyecto en tu terminal y ejecuta el siguiente comando:
 `npm test`
+![Alt text](</src/img/test.png.jpeg>)
 
 - [✔] Pruebas unitarias cubren un mínimo del 70% de statements, functions,
   lines, y branches.

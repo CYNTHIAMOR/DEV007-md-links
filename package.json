@@ -7,7 +7,7 @@
     "node": ">=16.x"
   },
   "bin": {
-    "mdLinks": "mdLinks.js"
+    "mdLinks": "cli.js"
   },
   "prettier": {
     "singleQuote": true
