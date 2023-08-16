@@ -45,6 +45,7 @@ describe('getAbsolutePath', () => {
     expect(getAbsolutePath(rutaConBarrasMezcladas)).toBe(rutaEsperadaConBarrasMezcladas);
   });
 });
+// reguex
 describe('linkRegex', () => {
   it('debe extraer los enlaces del archivo Markdown', () => {
     const markdownContent = `Este es un archivo Markdown con un [enlace](https://www.youtube.com/watch?v=ivdTnPl1ND0)`;
