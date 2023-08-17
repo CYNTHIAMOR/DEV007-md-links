@@ -1,13 +1,13 @@
 {
   "name": "md-links-cynthia-moreategui",
   "author ": "cynthia Rm",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description ": "herramiento de linea de comando {CLI} csi como tu propia libreria en js",
   "engines": {
     "node": ">=16.x"
   },
   "bin": {
-    "mdLinks": "cli.js"
+    "mdLinks": "mdLinks.js"
   },
   "prettier": {
     "singleQuote": true
